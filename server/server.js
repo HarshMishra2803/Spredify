@@ -10,6 +10,7 @@ app.use(express.json())
 connectDB();
 
 app.use('/api/auth', authRoutes)
+app.use('/api/auth/login',authRoutes)
 
 
 
@@ -18,7 +19,7 @@ app.get("/",(req,res)=>{
 })
 
 app.listen(PORT,()=>{
-    console.log("server is running on port 8000")
+    console.log("server is running on port 8000 ")
 });
 
 module.exports = app;   

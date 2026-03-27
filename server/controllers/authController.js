@@ -36,4 +36,43 @@ const register = async (req,res) => {
   }
 
 };
-module.exports = { register };
+
+const login =  async(req,res) =>{
+
+  const email = req.body.email;
+  const password = req.body.password;
+
+  const existUser =  await User.findOne({email});
+
+
+  if(!existUser) {
+    return res.status(404).json({
+      message: "User not found!"
+    })
+  }
+
+  const isMatch = await bcrypt.compare(password, existUser.password)
+
+
+  if(isMatch) {
+    const token = jwt.sign({
+      id: existUser._id
+    }, process.env.JWT_SECRET, {
+      expiresIn: "30d"
+    })
+   
+    return res.status(200).json({
+      message: "Login successful",
+      token
+    })
+  }
+  
+  else{
+    return res.status(400).json({
+      message:"User not found !"
+    })
+  }
+
+}
+
+module.exports = { register ,login};

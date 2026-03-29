@@ -2,6 +2,7 @@ const express  = require("express");
 const connectDB = require("./config/db");
 require('dotenv').config()
 const authRoutes = require('./routes/authRoutes')
+const authmiddleware = require('./middleware/authMiddleware')
 
 const PORT = process.env.PORT || 8000;
 const app = express();
@@ -17,6 +18,10 @@ app.use('/api/auth/login',authRoutes)
 app.get("/",(req,res)=>{
     res.send("hello")
 })
+
+app.get('/api/protected', authmiddleware, (req, res) => {
+    res.json({ message: "Welcome!", user: req.user })
+  })
 
 app.listen(PORT,()=>{
     console.log("server is running on port 8000 ")

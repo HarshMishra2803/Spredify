@@ -5,7 +5,7 @@ const repurpose = async (req, res) => {
 
 
     try {
-        const platforms = req.body.platforms;
+    const platforms = req.body.platforms;
     const userId = req.user.id 
     const content = req.body.content 
 
@@ -32,5 +32,30 @@ const repurpose = async (req, res) => {
 }
 
 
+const getHistory = async (req, res) => {
 
-module.exports = { repurpose };
+  try{
+
+  const userId = req.user.id 
+
+  const data = await Content.find(
+    { 
+      userId
+     }
+  )
+  return res.status(200).json({
+    message: "History fetched!",
+    data
+  })
+}
+  catch(error){
+    return res.status(500).json({ message: error.message })
+  }
+}
+
+module.exports = {
+  repurpose,
+  getHistory
+}
+
+
